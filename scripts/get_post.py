@@ -1,9 +1,8 @@
 import requests
 def print_post(response):
-    print(response.status_code)
-    data = response.json()
-    print(data)
     if response.status_code == 200:
+        data = response.json()
+        print(data)
         print("Title:", data["title"], "User id:", data["userId"])
     else:
         print("Error:", response.status_code)
