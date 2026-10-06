@@ -9,9 +9,9 @@ def print_post(response):
 
     
 
-response1 = requests.get("https://jsonplaceholder.typicode.com/posts/1")
-response2 = requests.get("https://jsonplaceholder.typicode.com/posts/99999")
-response3 = requests.get("https://jsonplaceholder.typicode.com/posts")
+response1 = requests.get("https://jsonplaceholder.typicode.com/posts/1", timeput = 5)
+response2 = requests.get("https://jsonplaceholder.typicode.com/posts/99999", timeout = 5)
+response3 = requests.get("https://jsonplaceholder.typicode.com/posts", timeout = 5)
 
 print("RESPONSE 1:")
 print_post(response1)
