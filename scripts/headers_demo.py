@@ -1,55 +1,35 @@
-import requests
-
-def send_request(method, url, expected_status, **kwargs):
-    pass
+from http_client import send_request
 
 def get_my_headers():
-    url = "https://httpbin.org/headers"
-    try:
-        response = requests.get(url, headers={"X-My-Name": "Yeskendir"}, timeout=5)
-        if response.status_code == 200:
-            data = response.json()
-            return data["headers"], None
-        return None, f"Error: status code {response.status_code}"
+    data, error = send_request("GET", "https://httpbin.org/headers", 200, headers={"X-My-Name": "Yeskendir"})
+    if error is not None:
+        return None, error
+    return data["headers"], None
 
-    except requests.exceptions.RequestException as error:
-        return None, f"Request failed: {error}"
 
 def get_user_posts(user_id):
-    url = "https://jsonplaceholder.typicode.com/posts"
-    try:
-        response = requests.get(url, params={"userId": user_id}, timeout=5)
-        if response.status_code == 200:
-            return response.json(), None
-        return None, f"Error: status code {response.status_code}"
+    return send_request("GET", "https://jsonplaceholder.typicode.com/posts", 200, params={"userId": user_id})
 
-    except requests.exceptions.RequestException as error:
-        return None, f"Request failed: {error}"
 
 def create_post(title, body, user_id):
-    url = "https://jsonplaceholder.typicode.com/posts"
-    try:
-        response = requests.post(url, json={"title": title, "body": body, "userId": user_id}, timeout=5)
-        if response.status_code == 201:
-            return response.json(), None
-        return None, f"Error: status code {response.status_code}"
-    except requests.exceptions.RequestException as error:
-        return None, f"Request failed: {error}"
+    return send_request("POST", "https://jsonplaceholder.typicode.com/posts", 201, json={"title": title, "body": body, "userId": user_id})
 
-headers, error = get_my_headers()
-if error is not None:
-    print(error)
-else:
-    print("X-My-Name:", headers["X-My-Name"])
 
-posts, error = get_user_posts(1)
-if error is not None:
-    print(error)
-else:
-    print("Posts:", len(posts))
+if __name__ == "__main__":
+    headers, error = get_my_headers()
+    if error is not None:
+        print(error)
+    else:
+        print("X-My-Name:", headers["X-My-Name"])
 
-post, error = create_post("My title", "My text", 1)
-if error is not None:
-    print(error)
-else:
-    print("Created, id:", post["id"])
+    posts, error = get_user_posts(1)
+    if error is not None:
+        print(error)
+    else:
+        print("Posts:", len(posts))
+
+    post, error = create_post("My title", "My text", 1)
+    if error is not None:
+        print(error)
+    else:
+        print("Created, id:", post["id"])
