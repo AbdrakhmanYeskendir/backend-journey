@@ -6,12 +6,14 @@
 - get_post.py: GET requests with requests, status code check
 - safe_get.py: fetch_post with try/except and timeout, returns (data, error)
 - post_client.py: PostClient class with get_post and get_posts_count methods
+- extracted the repeated try/except into send_request and moved it to http_client
 
 ## Main lessons
 - A function returns the result, the calling code decides what to print
 - Put in try only the code that can fail (the request itself)
 - Always set timeout in requests.get
 - Check the status code before calling .json()
+- the common function handles the network and status, the specific function decides what to take from the response. A module is just a file you import from.
 
 ## Mistakes I made
 - Activate the venv with `source .venv/Scripts/activate`, not by running the file
@@ -19,6 +21,7 @@
 - Request was outside try, so except did not catch it
 - len(response.status_code) instead of len(response.json())
 - Copied a block and forgot to rename post to post2
+- a branch without return silently returns None; wrong values passed headers=.
 
 ## To repeat
 - Thursday: write PostClient from scratch, without hints
